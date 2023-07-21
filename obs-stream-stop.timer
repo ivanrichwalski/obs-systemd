@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer for stopping OBS
+
+[Timer]
+Unit=obs-stream-stop.service
+OnCalendar=*-*-* 17:00:00
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

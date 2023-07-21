@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Location to calculate sunrise/sunset times
+LAT="44.45474N"
+LON="88.08082W"
+
+# OBS hotkey to start streaming
+STREAMSTART="ctrl+shift+F12"
+#STREAMSTART="ctrl+shift+F10"
+
+# OBS hotkeys to change scenes
+SCENESTART="ctrl+shift+1"
+SCENELIVE="ctrl+shift+2"
+
+
+PROGNAME=$( basename $0 )
+
+
+if [[ ! -x /usr/bin/obs ]]
+then
+	echo "${PROGNAME}: Unable to run OBS"
+	exit 1
+fi
+
+if [[ ! -x /usr/bin/ydotool ]]
+then
+	echo "${PROGNAME}: Unable to run ydotool"
+	exit 1
+fi
+
+
+# Wait for sunrise
+sunwait ${LAT} ${LON} wait rise offset 45
+
+# Start OBS in the background; give it a few seconds to load
+if [[ -x /usr/bin/obs ]]
+then
+	/usr/bin/obs &
+	sleep 5
+fi
+
+
+# Activate the "Starting soon" scene
+sudo ydotool key "$SCENESTART"
+
+# Start the streaming session
+sudo ydotool key "$STREAMSTART"
+sleep 30
+
+# Switch to the main live stream scene
+sudo ydotool key "$SCENELIVE"

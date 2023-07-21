@@ -1,0 +1,12 @@
+[Unit]
+Description=Start up OBS stream
+#StopWhenUnneeded=True
+
+[Service]
+Type=forking
+#RemainAfterExit=true
+StandardOutput=journal
+ExecStart=/home/coopstream/bin/obs-launch
+
+[Install]
+WantedBy=default.target

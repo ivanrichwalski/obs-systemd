@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer for starting OBS
+
+[Timer]
+Unit=obs-stream-start.service
+OnCalendar=*-*-* 4:45:00
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target
