@@ -3,10 +3,11 @@ Description=End of the day, stop stream and exit OBS
 #StopWhenUnneeded=True
 
 [Service]
-#Type=oneshot
+Type=oneshot
+TimeoutSec=4h
 #RemainAfterExit=true
 StandardOutput=journal
-ExecStart=/home/coopstream/bin/obs-shutdown
+ExecStart=%h/bin/obs-shutdown
 
 [Install]
 WantedBy=default.target

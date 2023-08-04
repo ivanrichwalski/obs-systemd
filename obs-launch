@@ -1,20 +1,21 @@
 #!/bin/bash
 
+# Script name for error messages
+PROGNAME=$( basename $0 )
+
+# Either "stream" for production, or "recording" for testing
+#OUTPUT="recording"
+OUTPUT="stream"
+
 # Location to calculate sunrise/sunset times
 LAT="44.45474N"
 LON="88.08082W"
 
-# OBS hotkey to start streaming
-STREAMSTART="ctrl+shift+F12"
-#STREAMSTART="ctrl+shift+F10"
+# Opening/starting soon scene
+SCENESTART="Opening 0"
 
-# OBS hotkeys to change scenes
-SCENESTART="ctrl+shift+1"
-SCENELIVE="ctrl+shift+2"
-
-
-PROGNAME=$( basename $0 )
-
+# Scene when the stream is "live"
+SCENELIVE="Chick View"
 
 if [[ ! -x /usr/bin/obs ]]
 then
@@ -22,30 +23,37 @@ then
 	exit 1
 fi
 
-if [[ ! -x /usr/bin/ydotool ]]
+if [[ ! -x ${HOME}/bin/ydotool ]]
 then
 	echo "${PROGNAME}: Unable to run ydotool"
 	exit 1
 fi
 
+if [[ ! -x ${HOME}/bin/obs-cli ]]
+then
+	echo "${PROGNAME}: Unable to run obs-cli"
+	exit 1
+fi
+
+# Write today's sunset time to be used in the on screen display
+SUNSET=$( date --date=$(sunwait ${LAT} ${LON} list sunset) +%l:%M%P )
+echo "sunsettime='${SUNSET}';" >~/OBS/clock/sunset.js
 
 # Wait for sunrise
 sunwait ${LAT} ${LON} wait rise offset 45
 
-# Start OBS in the background; give it a few seconds to load
-if [[ -x /usr/bin/obs ]]
-then
-	/usr/bin/obs &
-	sleep 5
-fi
+# Start OBS; give it a few seconds to load
+/usr/bin/obs &
+sleep 5
 
+# Switch to the intro scene
+obs-cli scene current ${SCENESTART}
 
-# Activate the "Starting soon" scene
-sudo ydotool key "$SCENESTART"
+# Start the network stream
+obs-cli ${OUTPUT} start
 
-# Start the streaming session
-sudo ydotool key "$STREAMSTART"
+# Time for intro to play
 sleep 30
 
 # Switch to the main live stream scene
-sudo ydotool key "$SCENELIVE"
+obs-cli scene current ${SCENELIVE}

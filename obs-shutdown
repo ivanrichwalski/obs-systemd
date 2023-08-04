@@ -1,33 +1,34 @@
 #!/bin/bash
 
+# Script name for error messages
+PROGNAME=$( basename $0 )
+
+# Either "stream" for production, or "recording" for testing
+#OUTPUT="recording"
+OUTPUT="stream"
+
 # Location to calculate sunrise/sunset times
 LAT="44.45474N"
 LON="88.08082W"
 
-# OBS hotkey to start streaming
-STREAMSTART="ctrl+shift+F12"
-#STREAMSTOP="ctrl+shift+F10"
+# Closing/ending scene
+SCENEEND="Closing 0"
 
-# OBS hotkeys to change scenes
-SCENEENDING="ctrl+shift+4"
-
-PROGNAME=$( basename $0 )
-
-if ! systemctl --user is-active obs-stream-start.service
+if ! pgrep -U ${USER} obs
 then
 	echo "${PROGNAME}: OBS not running"
 	exit 0
 fi
 
-if [[ ! -x /usr/bin/obs ]]
+if [[ ! -x ${HOME}/bin/ydotool ]]
 then
-	echo "${PROGNAME}: Unable to run OBS"
+	echo "${PROGNAME}: Unable to run ydotool"
 	exit 1
 fi
 
-if [[ ! -x /usr/bin/ydotool ]]
+if [[ ! -x ${HOME}/bin/obs-cli ]]
 then
-	echo "${PROGNAME}: Unable to run ydotool"
+	echo "${PROGNAME}: Unable to run obs-cli"
 	exit 1
 fi
 
@@ -35,11 +36,14 @@ fi
 sunwait ${LAT} ${LON} wait set
 
 # Activate the end of stream scene 
-sudo ydotool key "${SCENEENDING}"
+obs-cli scene current ${SCENEEND}
+
+# Time for ending to play
 sleep 30
 
-# Switch to the main live stream scene
-sudo ydotool key "${STREAMSTOP}"
+# End the recording/network stream
+obs-cli ${OUTPUT} stop
 sleep 5
 
-sudo ydotool key "ctrl+q"
+${HOME}/bin/ydotool key 29:1 16:1 29:0 16:0
+
