@@ -39,6 +39,10 @@ fi
 SUNSET=$( date --date=$(sunwait ${LAT} ${LON} list sunset) +%l:%M%P )
 echo "sunsettime='${SUNSET}';" >~/OBS/clock/sunset.js
 
+# Nice message for the log
+SUNRISE=$( sunwait ${LAT} ${LON} list rise offset 45 )
+echo "${PROGNAME}: Waiting for sunrise at ${SUNRISE}"
+
 # Wait for sunrise
 sunwait ${LAT} ${LON} wait rise offset 45
 

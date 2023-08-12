@@ -14,7 +14,7 @@ LON="88.08082W"
 # Closing/ending scene
 SCENEEND="Closing 0"
 
-if ! pgrep -U ${USER} obs
+if ! pgrep -U ${USER} obs >/dev/null
 then
 	echo "${PROGNAME}: OBS not running"
 	exit 0
@@ -32,8 +32,12 @@ then
 	exit 1
 fi
 
+# Nice message for the log
+SUNSET=$( sunwait ${LAT} ${LON} list set )
+echo "${PROGNAME}: Waiting for sunset at ${SUNSET}"
+
 # Wait for sunset
-sunwait ${LAT} ${LON} wait set
+echo sunwait ${LAT} ${LON} wait set
 
 # Activate the end of stream scene 
 obs-cli scene current ${SCENEEND}
@@ -46,4 +50,3 @@ obs-cli ${OUTPUT} stop
 sleep 5
 
 ${HOME}/bin/ydotool key 29:1 16:1 29:0 16:0
-
