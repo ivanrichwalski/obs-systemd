@@ -37,7 +37,7 @@ SUNSET=$( sunwait ${LAT} ${LON} list set )
 echo "${PROGNAME}: Waiting for sunset at ${SUNSET}"
 
 # Wait for sunset
-echo sunwait ${LAT} ${LON} wait set
+sunwait ${LAT} ${LON} wait set
 
 # Activate the end of stream scene 
 obs-cli scene current ${SCENEEND}
