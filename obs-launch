@@ -15,7 +15,7 @@ LON="88.08082W"
 SCENESTART="Opening 0"
 
 # Scene when the stream is "live"
-SCENELIVE="Chick View"
+SCENELIVE="CoopCam 3"
 
 if [[ ! -x /usr/bin/obs ]]
 then
