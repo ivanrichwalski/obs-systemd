@@ -47,7 +47,10 @@ echo "${PROGNAME}: Waiting for sunrise at ${SUNRISE}"
 sunwait ${LAT} ${LON} wait rise offset 45
 
 # Start OBS; give it a few seconds to load
-/usr/bin/obs &
+# Pass environment variable to avoid an
+# issue with docks when running under Wayland
+# https://github.com/obsproject/obs-studio/issues/4435
+QT_QPA_PLATFORM=xcb /usr/bin/obs &
 sleep 5
 
 # Switch to the intro scene
