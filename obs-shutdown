@@ -50,3 +50,6 @@ obs-cli ${OUTPUT} stop
 sleep 5
 
 ${HOME}/bin/ydotool key 29:1 16:1 29:0 16:0
+
+# Set the blank delay time to enable the screensaver
+gsettings set org.gnome.desktop.session idle-delay 300

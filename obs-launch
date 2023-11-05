@@ -40,11 +40,16 @@ SUNSET=$( date --date=$(sunwait ${LAT} ${LON} list sunset) +%l:%M%P )
 echo "sunsettime='${SUNSET}';" >~/OBS/clock/sunset.js
 
 # Nice message for the log
-SUNRISE=$( sunwait ${LAT} ${LON} list rise offset 45 )
+SUNRISE=$( sunwait ${LAT} ${LON} list rise offset 15 )
 echo "${PROGNAME}: Waiting for sunrise at ${SUNRISE}"
 
 # Wait for sunrise
-sunwait ${LAT} ${LON} wait rise offset 45
+sunwait ${LAT} ${LON} wait rise offset 15
+
+# Set the the screen blank delay to never blank
+# the screen, and disable the screensaver
+gsettings set org.gnome.desktop.session idle-delay 0
+gnome-screensaver-command -d
 
 # Start OBS; give it a few seconds to load
 # Pass environment variable to avoid an
