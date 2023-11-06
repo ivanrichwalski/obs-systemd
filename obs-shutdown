@@ -3,13 +3,33 @@
 # Script name for error messages
 PROGNAME=$( basename $0 )
 
+# Read settings from available config file
+if [[ -z "$XDG_CONFIG_HOME" ]]
+then
+	CFG="$HOME/.config"
+else
+	CFG="${XDG_CONFIG_HOME}"
+fi
+
+CFG="${CFG}/obs-stream.conf"
+
+if [[ -r "${CFG}" ]]
+then
+	source ${CFG}
+fi
+
+# Optional paramater for sunwait
+if [[ -n "${SUNSET_OFFSET}" ]] && (( ${SUNSET_OFFSET} != 0 ))
+then
+	SUNSET_OFFSET="offset ${SUNSET_OFFSET}"
+fi
+
 # Either "stream" for production, or "recording" for testing
 #OUTPUT="recording"
 OUTPUT="stream"
 
 # Location to calculate sunrise/sunset times
-LAT="44.45474N"
-LON="88.08082W"
+LOCATION="${LATITUDE} ${LONGITUDE}"
 
 # Closing/ending scene
 SCENEEND="Closing 0"
@@ -33,11 +53,11 @@ then
 fi
 
 # Nice message for the log
-SUNSET=$( sunwait ${LAT} ${LON} list set )
+SUNSET=$( sunwait ${LAT} ${LON} list set ${SUNSET_OFFSET} )
 echo "${PROGNAME}: Waiting for sunset at ${SUNSET}"
 
 # Wait for sunset
-sunwait ${LAT} ${LON} wait set
+sunwait ${LAT} ${LON} wait set ${SUNSET_OFFSET}
 
 # Activate the end of stream scene 
 obs-cli scene current ${SCENEEND}

@@ -3,13 +3,33 @@
 # Script name for error messages
 PROGNAME=$( basename $0 )
 
+# Read settings from available config file
+if [[ -z "$XDG_CONFIG_HOME" ]]
+then
+	CFG="$HOME/.config"
+else
+	CFG="${XDG_CONFIG_HOME}"
+fi
+
+CFG="${CFG}/obs-stream.conf"
+
+if [[ -r "${CFG}" ]]
+then
+	source ${CFG}
+fi
+
+# Optional parameter for sunwait
+if [[ -n "${SUNRISE_OFFSET}" ]] && (( ${SUNRISE_OFFSET} != 0 ))
+then
+	SUNRISE_OFFSET="offset ${SUNRISE_OFFSET}"
+fi
+
 # Either "stream" for production, or "recording" for testing
 #OUTPUT="recording"
 OUTPUT="stream"
 
 # Location to calculate sunrise/sunset times
-LAT="44.45474N"
-LON="88.08082W"
+LOCATION="${LATITUDE} ${LONGITUDE}"
 
 # Opening/starting soon scene
 SCENESTART="Opening 0"
@@ -36,15 +56,15 @@ then
 fi
 
 # Write today's sunset time to be used in the on screen display
-SUNSET=$( date --date=$(sunwait ${LAT} ${LON} list sunset) +%l:%M%P )
+SUNSET=$( date --date=$(sunwait ${LOCATION} list sunset) +%l:%M%P )
 echo "sunsettime='${SUNSET}';" >~/OBS/clock/sunset.js
 
 # Nice message for the log
-SUNRISE=$( sunwait ${LAT} ${LON} list rise offset 15 )
+SUNRISE=$( sunwait ${LOCATION} list rise ${SUNRISE_OFFSET} )
 echo "${PROGNAME}: Waiting for sunrise at ${SUNRISE}"
 
 # Wait for sunrise
-sunwait ${LAT} ${LON} wait rise offset 15
+sunwait ${LOCATION} wait rise ${SUNRISE_OFFSET}
 
 # Set the the screen blank delay to never blank
 # the screen, and disable the screensaver

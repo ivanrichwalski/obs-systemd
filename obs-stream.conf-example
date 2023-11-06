@@ -1,0 +1,16 @@
+#
+# Bash format script for common settings used
+# to control options for the automated stream
+#
+
+# Location point to calculate sunrise and sunset
+LATITUDE="45.00000N"
+LONGITUDE="90.00000W"
+
+# Offset for sunrise time
+# Negative before sunrise, positive after sunrise, 
+SUNRISE_OFFSET=-15
+
+# Offset for sunset time
+# Positive before sunset, negative after sunset
+SUNSET_OFFSET=0
