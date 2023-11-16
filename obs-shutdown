@@ -22,6 +22,8 @@ fi
 if [[ -n "${SUNSET_OFFSET}" ]] && (( ${SUNSET_OFFSET} != 0 ))
 then
 	SUNSET_OFFSET="offset ${SUNSET_OFFSET}"
+else
+	SUNSET_OFFSET=""
 fi
 
 # Either "stream" for production, or "recording" for testing
@@ -53,11 +55,12 @@ then
 fi
 
 # Nice message for the log
-SUNSET=$( sunwait ${LAT} ${LON} list set ${SUNSET_OFFSET} )
+SUNSET=$( sunwait ${LOCATION} list sunset ${SUNSET_OFFSET} )
 echo "${PROGNAME}: Waiting for sunset at ${SUNSET}"
 
+
 # Wait for sunset
-sunwait ${LAT} ${LON} wait set ${SUNSET_OFFSET}
+sunwait ${LOCATION} wait sunset ${SUNSET_OFFSET}
 
 # Activate the end of stream scene 
 obs-cli scene current ${SCENEEND}

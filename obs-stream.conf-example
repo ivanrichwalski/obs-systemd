@@ -4,11 +4,11 @@
 #
 
 # Location point to calculate sunrise and sunset
-LATITUDE="45.00000N"
-LONGITUDE="90.00000W"
+LATITUDE="37.82702N"
+LONGITUDE="122.42295W"
 
 # Offset for sunrise time
-# Negative before sunrise, positive after sunrise, 
+# Negative before sunrise, positive after sunrise
 SUNRISE_OFFSET=-15
 
 # Offset for sunset time
