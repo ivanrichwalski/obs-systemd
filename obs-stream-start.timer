@@ -3,8 +3,8 @@ Description=Timer for starting OBS
 
 [Timer]
 Unit=obs-stream-start.service
-# Sunrise time between 5am to 8:30am
-OnCalendar=*-*-* 4:45:00
+# Sunrise time between 4am to 8:30am
+OnCalendar=*-*-* 4:00:00
 AccuracySec=1min
 
 [Install]

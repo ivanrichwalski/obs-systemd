@@ -3,8 +3,8 @@ Description=Timer for stopping OBS
 
 [Timer]
 Unit=obs-stream-stop.service
-# Sunrise time between 5pm to 9pm
-OnCalendar=*-*-* 17:00:00
+# Sunrise time between 4pm to 9pm
+OnCalendar=*-*-* 16:00:00
 AccuracySec=1min
 
 [Install]
