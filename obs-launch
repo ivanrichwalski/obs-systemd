@@ -87,5 +87,8 @@ obs-cli ${OUTPUT} start
 # Time for intro to play
 sleep 30
 
-# Switch to the main live stream scene
-obs-cli scene current ${SCENELIVE}
+# Start the scene switching process in the background
+${HOME}/bin/scene-switcher &
+
+#### Switch to the main live stream scene
+###obs-cli scene current ${SCENELIVE}

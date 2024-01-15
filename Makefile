@@ -3,7 +3,7 @@ SYSTEMD = ${HOME}/.config/systemd/user
 
 all: install
 
-bins = obs-launch obs-shutdown
+bins = obs-launch obs-shutdown scene-switcher
 units = obs-stream-start.service obs-stream-start.timer \
 	obs-stream-stop.service obs-stream-stop.timer
 

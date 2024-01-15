@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Script name for error messages
+PROGNAME=$( basename $0 )
+
+readarray -t SCENES < <( obs-cli scene list | grep "CoopCam" | sort )
+
+ID=0
+
+while true
+do
+
+	# Reset back to the first scene
+	if [[ $ID -eq ${#SCENES[@]} ]]
+	then
+		ID=0
+	fi
+
+	TIME=$( date +%H:%M:%S )
+
+	NEWSCENE=${SCENES[$ID]}
+	
+	echo "${PROGNAME} -- ${TIME}: Switching to scene: ${NEWSCENE}"
+
+	# Change scene
+	obs-cli scene current "${NEWSCENE}"
+
+	# Delay between scenes
+	sleep 300
+
+	ID=$(( $ID + 1 ))
+done

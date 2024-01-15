@@ -72,7 +72,11 @@ sleep 30
 obs-cli ${OUTPUT} stop
 sleep 5
 
+# Set Control-Q to OBS to exit the program
 ${HOME}/bin/ydotool key 29:1 16:1 29:0 16:0
+
+# Kill the background scene switch automation
+pkill -u ${USER} scene-switcher
 
 # Set the blank delay time to enable the screensaver
 gsettings set org.gnome.desktop.session idle-delay 300
