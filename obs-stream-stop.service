@@ -4,7 +4,7 @@ Description=End of the day, stop stream and exit OBS
 
 [Service]
 Type=oneshot
-TimeoutSec=4h
+#TimeoutSec=6h
 #RemainAfterExit=true
 StandardOutput=journal
 ExecStart=%h/bin/obs-shutdown

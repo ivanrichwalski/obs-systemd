@@ -4,7 +4,7 @@ Description=Start up OBS stream
 
 [Service]
 Type=forking
-TimeoutSec=4h
+TimeoutSec=6h
 #RemainAfterExit=true
 StandardOutput=journal
 ExecStart=%h/bin/obs-launch
