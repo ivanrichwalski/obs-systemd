@@ -26,10 +26,6 @@ else
 	SUNSET_OFFSET=""
 fi
 
-# Either "stream" for production, or "recording" for testing
-#OUTPUT="recording"
-OUTPUT="stream"
-
 # Location to calculate sunrise/sunset times
 LOCATION="${LATITUDE} ${LONGITUDE}"
 
@@ -58,7 +54,6 @@ fi
 SUNSET=$( sunwait ${LOCATION} list sunset ${SUNSET_OFFSET} )
 echo "${PROGNAME}: Waiting for sunset at ${SUNSET}"
 
-
 # Wait for sunset
 sunwait ${LOCATION} wait sunset ${SUNSET_OFFSET}
 
@@ -68,8 +63,21 @@ obs-cli scene current ${SCENEEND}
 # Time for ending to play
 sleep 30
 
-# End the recording/network stream
-obs-cli ${OUTPUT} stop
+# End the network stream if it's active
+STATUS=$( obs-cli streaming status )
+if [[ ${STATUS} == "Streaming: true"* ]]
+then
+	obs-cli stream stop
+fi
+
+# End the local recording if it's active
+STATUS=$( obs-cli recording status )
+if [[ ${STATUS} == "Recording: true"* ]]
+then
+	obs-cli recording stop
+fi
+
+# Brief pause before closing OBS
 sleep 5
 
 # Set Control-Q to OBS to exit the program

@@ -24,10 +24,6 @@ then
 	SUNRISE_OFFSET="offset ${SUNRISE_OFFSET}"
 fi
 
-# Either "stream" for production, or "recording" for testing
-#OUTPUT="recording"
-OUTPUT="stream"
-
 # Location to calculate sunrise/sunset times
 LOCATION="${LATITUDE} ${LONGITUDE}"
 
@@ -82,13 +78,10 @@ sleep 5
 obs-cli scene current ${SCENESTART}
 
 # Start the network stream
-obs-cli ${OUTPUT} start
+obs-cli stream start
 
 # Time for intro to play
 sleep 30
 
 # Start the scene switching process in the background
 ${HOME}/bin/scene-switcher &
-
-#### Switch to the main live stream scene
-###obs-cli scene current ${SCENELIVE}
