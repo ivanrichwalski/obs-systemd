@@ -32,12 +32,6 @@ LOCATION="${LATITUDE} ${LONGITUDE}"
 # Closing/ending scene
 SCENEEND="Closing 0"
 
-if ! pgrep -U ${USER} obs >/dev/null
-then
-	echo "${PROGNAME}: OBS not running"
-	exit 0
-fi
-
 if [[ ! -x ${HOME}/bin/ydotool ]]
 then
 	echo "${PROGNAME}: Unable to run ydotool"
@@ -57,6 +51,12 @@ echo "${PROGNAME}: Waiting for sunset at ${SUNSET}"
 # Wait for sunset
 sunwait ${LOCATION} wait sunset ${SUNSET_OFFSET}
 
+if ! pgrep -U ${USER} "obs$" >/dev/null
+then
+	echo "${PROGNAME}: OBS not running"
+	exit 0
+fi
+
 # Activate the end of stream scene 
 obs-cli scene current ${SCENEEND}
 
@@ -64,7 +64,7 @@ obs-cli scene current ${SCENEEND}
 sleep 30
 
 # End the network stream if it's active
-STATUS=$( obs-cli streaming status )
+STATUS=$( obs-cli stream status )
 if [[ ${STATUS} == "Streaming: true"* ]]
 then
 	obs-cli stream stop
