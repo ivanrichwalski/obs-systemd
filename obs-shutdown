@@ -88,3 +88,9 @@ pkill -u ${USER} scene-switcher
 
 # Set the blank delay time to enable the screensaver
 gsettings set org.gnome.desktop.session idle-delay 300
+
+# Force screensaver activation
+if [[ -x /usr/bin/gnome-screensaver-command ]]
+then
+	/usr/bin/gnome-screensaver-command -a
+fi
