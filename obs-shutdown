@@ -87,7 +87,7 @@ ${HOME}/bin/ydotool key 29:1 16:1 29:0 16:0
 pkill -u ${USER} scene-switcher
 
 # Set the blank delay time to enable the screensaver
-gsettings set org.gnome.desktop.session idle-delay 300
+gsettings set org.gnome.desktop.session idle-delay 30
 
 # Force screensaver activation
 if [[ -x /usr/bin/gnome-screensaver-command ]]
