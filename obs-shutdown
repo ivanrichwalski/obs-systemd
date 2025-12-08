@@ -90,7 +90,7 @@ pkill -u ${USER} scene-switcher
 gsettings set org.gnome.desktop.session idle-delay 30
 
 # Force screensaver activation
-if [[ -x /usr/bin/gnome-screensaver-command ]]
+if [[ -x /usr/bin/xdg-screensaver ]]
 then
-	/usr/bin/gnome-screensaver-command -a
+	/usr/bin/xdg-screensaver activate
 fi
